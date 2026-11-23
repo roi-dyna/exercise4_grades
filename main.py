@@ -2,7 +2,7 @@ import os
 import platform
 import subprocess
 
-from PySide6.QtWidgets import QApplication,QWidget,QPushButton,QLabel,QLineEdit,QTableWidget, QFileDialog,QTableWidgetItem
+from PySide6.QtWidgets import QApplication,QWidget,QPushButton,QLabel,QLineEdit,QTableWidget, QFileDialog,QTableWidgetItem,QHeaderView
 from About import AboutWindow
 
 class MainWindow(QWidget):
@@ -10,6 +10,8 @@ class MainWindow(QWidget):
         super().__init__()
         self.setWindowTitle('Grades Fixer')
         self.setGeometry(100,100,600,500)
+        with open(os.path.join(os.path.dirname(__file__), 'style.qss'), 'r') as style_file:
+            self.setStyleSheet(style_file.read())
 
         self.student_ids = []
         self.original_grades = []
@@ -17,17 +19,21 @@ class MainWindow(QWidget):
         self.selected_file = ''
 
         self.about_window= AboutWindow()
+
         self.load_button = QPushButton('Load CSV', self)
         self.load_button.setGeometry(20, 20, 140, 35)
         self.load_button.clicked.connect(self.load_file)
+        self.load_button.setObjectName('primaryBtn')
 
         self.update_button = QPushButton('Update File', self)
         self.update_button.setGeometry(180, 20, 140, 35)
         self.update_button.clicked.connect(self.update_file)
+        self.update_button.setObjectName('successBtn')
 
         self.about_button = QPushButton('About', self)
         self.about_button.setGeometry(460, 20, 120, 35)
         self.about_button.clicked.connect(self.show_about)
+        self.about_button.setObjectName('secondaryBtn')
 
         self.bonus_label = QLabel('Bonus Points:', self)
         self.bonus_label.setGeometry(20, 75, 100, 30)
@@ -39,6 +45,9 @@ class MainWindow(QWidget):
         self.table = QTableWidget(50, 3, self)
         self.table.setGeometry(20, 125, 560, 350)
         self.table.setHorizontalHeaderLabels(['ID', 'Original Grades', 'Corrected Grades'])
+        self.table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
+        self.table.setAlternatingRowColors(True)
+        self.table.verticalHeader().setDefaultSectionSize(28)
 
     def show_about(self):
         self.about_window.show()

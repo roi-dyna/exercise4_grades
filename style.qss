@@ -1,0 +1,82 @@
+QWidget {
+    background-color: #f5f7fa;
+    color: #1f2937;
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 13px;
+}
+
+QLabel {
+    color: #374151;
+    font-weight: 600;
+}
+
+QLineEdit {
+    background-color: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 13px;
+}
+
+QLineEdit:focus {
+    border: 1.5px solid #2563eb;
+}
+
+QPushButton {
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-weight: 600;
+    border: none;
+}
+
+QPushButton#primaryBtn {
+    background-color: #2563eb;
+    color: #ffffff;
+}
+QPushButton#primaryBtn:hover {
+    background-color: #1d4ed8;
+}
+
+QPushButton#successBtn {
+    background-color: #059669;
+    color: #ffffff;
+}
+QPushButton#successBtn:hover {
+    background-color: #047857;
+}
+
+QPushButton#secondaryBtn {
+    background-color: #ffffff;
+    color: #374151;
+    border: 1px solid #cbd5e1;
+}
+QPushButton#secondaryBtn:hover {
+    background-color: #e2e8f0;
+}
+
+QTableWidget {
+    background-color: #ffffff;
+    alternate-background-color: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    gridline-color: #e2e8f0;
+    selection-background-color: #dbeafe;
+    selection-color: #1e3a8a;
+}
+
+QHeaderView::section {
+    background-color: #e2e8f0;
+    color: #1e293b;
+    padding: 8px;
+    border: none;
+    border-right: 1px solid #cbd5e1;
+    border-bottom: 1px solid #cbd5e1;
+    font-weight: 700;
+}
+
+QTableCornerButton::section {
+    background-color: #e2e8f0;
+    border: none;
+    border-right: 1px solid #cbd5e1;
+    border-bottom: 1px solid #cbd5e1;
+}
