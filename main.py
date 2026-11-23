@@ -1,3 +1,7 @@
+import os
+import platform
+import subprocess
+
 from PySide6.QtWidgets import QApplication,QWidget,QPushButton,QLabel,QLineEdit,QTableWidget, QFileDialog,QTableWidgetItem
 from About import AboutWindow
 
@@ -19,6 +23,7 @@ class MainWindow(QWidget):
 
         self.update_button = QPushButton('Update File', self)
         self.update_button.setGeometry(180, 20, 140, 35)
+        self.update_button.clicked.connect(self.update_file)
 
         self.about_button = QPushButton('About', self)
         self.about_button.setGeometry(460, 20, 120, 35)
@@ -50,7 +55,7 @@ class MainWindow(QWidget):
         self.corrected_grades = []
 
         with open(self.selected_file, 'r') as f:
-            next(f)
+            self.header = next(f)
             for line in f:
                 parts = line.strip().split(',')
                 self.student_ids.append(parts[0])
@@ -79,6 +84,22 @@ class MainWindow(QWidget):
             self.corrected_grades[i] = new_grade
 
         self.update_table()
+
+    def update_file(self):
+        if not self.selected_file:
+            return
+
+        with open(self.selected_file, 'w') as f:
+            f.write(self.header)
+            for i in range(len(self.student_ids)):
+                f.write(f'{self.student_ids[i]},{self.corrected_grades[i]}\n')
+
+        if platform.system() == 'Windows':
+            os.startfile(self.selected_file)
+        elif platform.system() == 'Darwin':
+            subprocess.Popen(['open', self.selected_file])
+        else:
+            subprocess.Popen(['xdg-open', self.selected_file])
 
 if __name__ == '__main__':
     app=QApplication()
