@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QApplication,QWidget,QPushButton,QLabel,QLineEdit,QTableWidget
+from PySide6.QtWidgets import QApplication,QWidget,QPushButton,QLabel,QLineEdit,QTableWidget, QFileDialog,QTableWidgetItem
 from About import AboutWindow
 
 class MainWindow(QWidget):
@@ -15,6 +15,7 @@ class MainWindow(QWidget):
         self.about_window= AboutWindow()
         self.load_button = QPushButton('Load CSV', self)
         self.load_button.setGeometry(20, 20, 140, 35)
+        self.load_button.clicked.connect(self.load_file)
 
         self.update_button = QPushButton('Update File', self)
         self.update_button.setGeometry(180, 20, 140, 35)
@@ -35,6 +36,35 @@ class MainWindow(QWidget):
 
     def show_about(self):
         self.about_window.show()
+
+
+    def load_file(self):
+        filename, _ = QFileDialog.getOpenFileName(self, 'Select Grades File', '', 'CSV Files (*.csv)')
+        if not filename:
+            return
+
+        self.selected_file = filename
+        self.student_ids = []
+        self.original_grades = []
+        self.corrected_grades = []
+
+        with open(self.selected_file, 'r') as f:
+            next(f)
+            for line in f:
+                parts = line.strip().split(',')
+                self.student_ids.append(parts[0])
+                grade = int(parts[1])
+                self.original_grades.append(grade)
+                self.corrected_grades.append(grade)
+
+        self.update_table()
+
+    def update_table(self):
+        for i in range(len(self.student_ids)):
+            self.table.setItem(i, 0, QTableWidgetItem(str(self.student_ids[i])))
+            self.table.setItem(i, 1, QTableWidgetItem(str(self.original_grades[i])))
+            self.table.setItem(i, 2, QTableWidgetItem(str(self.corrected_grades[i])))
+    
 
 if __name__ == '__main__':
     app=QApplication()
