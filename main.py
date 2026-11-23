@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QApplication,QWidget,QPushButton
+from PySide6.QtWidgets import QApplication,QWidget,QPushButton,QLabel,QLineEdit,QTableWidget
 from About import AboutWindow
 
 class MainWindow(QWidget):
@@ -22,6 +22,16 @@ class MainWindow(QWidget):
         self.about_button = QPushButton('About', self)
         self.about_button.setGeometry(460, 20, 120, 35)
         self.about_button.clicked.connect(self.show_about)
+
+        self.bonus_label = QLabel('Bonus Points:', self)
+        self.bonus_label.setGeometry(20, 75, 100, 30)
+
+        self.bonus_input = QLineEdit(self)
+        self.bonus_input.setGeometry(120, 75, 100, 30)
+
+        self.table = QTableWidget(50, 3, self)
+        self.table.setGeometry(20, 125, 560, 350)
+        self.table.setHorizontalHeaderLabels(['ID', 'Original Grades', 'Corrected Grades'])
 
     def show_about(self):
         self.about_window.show()
