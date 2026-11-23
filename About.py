@@ -5,7 +5,7 @@ class AboutWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle('About Me')
-        self.setGeometry(200, 200, 350, 480)
+        self.setGeometry(200, 200, 350, 510)
         self.setStyleSheet("background-color: #f4f6f9; font-family: Arial;")
 
         self.name_label = QLabel('Name: Roi Harris', self)
@@ -21,8 +21,13 @@ class AboutWindow(QWidget):
         self.linkedin_label.setStyleSheet("font-size: 14px; font-weight: bold;")
         self.linkedin_label.setOpenExternalLinks(True)
 
+        self.github_label = QLabel('<a href="https://github.com/roi-dyna/exercise4_grades">My GitHub Repository</a>', self)        
+        self.github_label.setGeometry(25, 120, 300, 25)
+        self.github_label.setStyleSheet("font-size: 14px; font-weight: bold;")
+        self.github_label.setOpenExternalLinks(True)
+
         self.pic_label = QLabel(self)
-        self.pic_label.setGeometry(25, 130, 300, 300)
+        self.pic_label.setGeometry(25, 160, 300, 300)
         self.pic_label.setStyleSheet("border: 2px solid #bdc3c7;")
         image = QPixmap('image.jpg').scaled(300, 300)
         self.pic_label.setPixmap(image)
