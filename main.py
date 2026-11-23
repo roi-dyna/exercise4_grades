@@ -29,6 +29,7 @@ class MainWindow(QWidget):
 
         self.bonus_input = QLineEdit(self)
         self.bonus_input.setGeometry(120, 75, 100, 30)
+        self.bonus_input.returnPressed.connect(self.apply_bonus)
 
         self.table = QTableWidget(50, 3, self)
         self.table.setGeometry(20, 125, 560, 350)
@@ -65,6 +66,19 @@ class MainWindow(QWidget):
             self.table.setItem(i, 1, QTableWidgetItem(str(self.original_grades[i])))
             self.table.setItem(i, 2, QTableWidgetItem(str(self.corrected_grades[i])))
     
+    def apply_bonus(self):
+        text = self.bonus_input.text()
+        if not text:
+            return
+        bonus = int(text)
+
+        for i in range(len(self.original_grades)):
+            new_grade = self.original_grades[i] + bonus
+            if new_grade > 100:
+                new_grade = 100
+            self.corrected_grades[i] = new_grade
+
+        self.update_table()
 
 if __name__ == '__main__':
     app=QApplication()
