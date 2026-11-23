@@ -3,6 +3,7 @@ import platform
 import subprocess
 
 from PySide6.QtWidgets import QApplication,QWidget,QPushButton,QLabel,QLineEdit,QTableWidget, QFileDialog,QTableWidgetItem,QHeaderView
+from PySide6.QtGui import QIntValidator, QColor
 from About import AboutWindow
 
 class MainWindow(QWidget):
@@ -41,6 +42,10 @@ class MainWindow(QWidget):
         self.bonus_input = QLineEdit(self)
         self.bonus_input.setGeometry(120, 75, 100, 30)
         self.bonus_input.returnPressed.connect(self.apply_bonus)
+        self.bonus_input.setValidator(QIntValidator(-100, 100))
+
+        self.stats_label = QLabel('Avg: -  |  Pass: -', self)
+        self.stats_label.setGeometry(240, 75, 340, 30)
 
         self.table = QTableWidget(50, 3, self)
         self.table.setGeometry(20, 125, 560, 350)
@@ -75,10 +80,37 @@ class MainWindow(QWidget):
         self.update_table()
 
     def update_table(self):
+        if len(self.student_ids) == 0:
+            return
+
+        orig_pass = 0
+        corr_pass = 0
+
         for i in range(len(self.student_ids)):
-            self.table.setItem(i, 0, QTableWidgetItem(str(self.student_ids[i])))
-            self.table.setItem(i, 1, QTableWidgetItem(str(self.original_grades[i])))
-            self.table.setItem(i, 2, QTableWidgetItem(str(self.corrected_grades[i])))
+            id_item = QTableWidgetItem(str(self.student_ids[i]))
+            orig_item = QTableWidgetItem(str(self.original_grades[i]))
+            corr_item = QTableWidgetItem(str(self.corrected_grades[i]))
+
+            if self.original_grades[i] < 60:
+                orig_item.setBackground(QColor('#fee2e2'))
+            else:
+                orig_item.setBackground(QColor('#dcfce7'))
+                orig_pass += 1
+
+            if self.corrected_grades[i] < 60:
+                corr_item.setBackground(QColor('#fee2e2'))
+            else:
+                corr_item.setBackground(QColor('#dcfce7'))
+                corr_pass += 1
+
+            self.table.setItem(i, 0, id_item)
+            self.table.setItem(i, 1, orig_item)
+            self.table.setItem(i, 2, corr_item)
+
+        orig_avg = sum(self.original_grades) / len(self.original_grades)
+        corr_avg = sum(self.corrected_grades) / len(self.corrected_grades)
+        total = len(self.student_ids)
+        self.stats_label.setText(f'Avg: {orig_avg:.1f} → {corr_avg:.1f}  |  Pass: {orig_pass}/{total} → {corr_pass}/{total}')
     
     def apply_bonus(self):
         text = self.bonus_input.text()
