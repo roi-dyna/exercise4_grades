@@ -114,7 +114,7 @@ class MainWindow(QWidget):
     
     def apply_bonus(self):
         text = self.bonus_input.text()
-        if not text:
+        if not text or text == '-':
             return
         bonus = int(text)
 
@@ -122,6 +122,8 @@ class MainWindow(QWidget):
             new_grade = self.original_grades[i] + bonus
             if new_grade > 100:
                 new_grade = 100
+            elif new_grade < 0:
+                new_grade = 0
             self.corrected_grades[i] = new_grade
 
         self.update_table()
