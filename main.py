@@ -67,10 +67,14 @@ class MainWindow(QWidget):
         self.student_ids = []
         self.original_grades = []
         self.corrected_grades = []
+        self.table.clearContents()
+        self.bonus_input.clear()
 
         with open(self.selected_file, 'r') as f:
             self.header = next(f)
             for line in f:
+                if not line.strip():
+                    continue
                 parts = line.strip().split(',')
                 self.student_ids.append(parts[0])
                 grade = int(parts[1])
